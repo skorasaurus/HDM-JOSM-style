@@ -95,7 +95,7 @@ way[highway=tertiary], way[highway=tertiary_link]
 }
 way[highway=unclassified]{
     z-index: 6;
-    width: 5;
+    width: 4;
     casing-width: 2;
 }
 way[highway=residential] {
