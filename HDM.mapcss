@@ -1,5 +1,6 @@
 /*
 Humanatirian Data Model, derived from Potlatch2 style.
+Emphasizes road condition and surface
 */
 meta {
     title: "HDM";
@@ -105,7 +106,7 @@ way[highway=residential] {
 way[narrow=yes],
 way[highway=service] {
     z-index: 3;
-    width: 3;
+    width: 2.5;
     color: #DAA1B7;
     casing-color: #DAA1B7;
     casing-width: 1;
@@ -148,16 +149,42 @@ way[highway=living_street] {
 /* Default, for values "unpaved" */
 way[surface] {
     color: #981919;
+    opacity:0.5;
 }
 way[surface=paved],
 way[surface=asphalt],
 way[surface=paving_stones] {
-    color: #d4d4d4;
+    color: #981919;
+    opacity: 1.0;    
 }
 way[smoothness=intermediate] {
-    casing-dashes: 5,5;
+    casing-dashes: 5,7;
 }
-way[smoothness=bad] {
+
+
+way[smoothness=bad][highway=primary]   
+{
+    casing-dashes: 5,16;
+}
+
+way[smoothness=bad][highway=service]   
+{
+    casing-dashes: 5,10;
+}
+
+
+way[smoothness=bad][highway=residential]   
+{
+    casing-dashes: 5,11.5;
+}
+
+way[smoothness=bad][highway=track]   
+{
+    casing-dashes: 5,10;
+}
+
+way[smoothness=bad][highway=service]   
+{
     casing-dashes: 5,10;
 }
 
@@ -204,17 +231,11 @@ way[highway=bridleway] {
     width: 2;
     dashes: 4, 2, 2, 2;
     prop_path : 1;}
-way[highway=track] {
-    z-index: 5;
-    color: #996644;
-    width: 2;
-    dashes: 4, 2;
-    prop_path : 1;}
+way[highway=track],
 way[highway=path] {
     z-index: 5;
-    color: #c0a56e;
+    color: #DAA1B7;
     width: 2;
-    dashes: 2, 2;
     prop_path : 1;}
 way[highway=cycleway] {
     z-index: 5;
@@ -1228,7 +1249,7 @@ area[natural=beach]:closed              {
     fill-color: yellow;
     fill-opacity: 0.2;
     prop_area_small_name : 1;}
-way[natural=coastline]						{
+way[natural=coastline]						{ 
     z-index: 5;
     color: black;
     width: 3;
