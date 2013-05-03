@@ -63,8 +63,8 @@ way[highway=residential],way[highway=unclassified] {
     text-halo-radius: 2;
     linecap: round;
     casing-linecap: round;
-     color: #DAA1B7;
-    casing-color: #DAA1B7;
+     color: #C0C500;
+    casing-color: #C0C500;
 }
 way[highway=trunk],way[highway=trunk_link],
 way[highway=motorway],way[highway=motorway_link],
