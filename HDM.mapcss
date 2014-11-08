@@ -18,6 +18,24 @@ node, area {
     text-color: black;
 }
 
+
+
+/*************************/
+/* create style settings */
+/*************************/
+
+setting::hide_icons {
+  type: boolean;
+  label: tr("Hide icons at low zoom");
+  default: true;
+}
+
+setting::shrink_nodes {
+  type: boolean;
+  label: tr("Less obtrusive node symbols at low zoom");
+  default: true;
+}
+
 relation[restriction=no_left_turn] {
     icon-image: "vehicle/restriction/turn_restrictions/no_left_turn.png";
 }
@@ -1602,3 +1620,76 @@ node[office=ngo] {
 node[office=government] {
     icon-image: "icons/government.png";
 }
+
+
+
+
+
+/****************************************/
+/* zoom levels and general node display */
+/****************************************/
+
+/*
+Summary of different zoom levels:
+  (any zoom)    place=* and a few natural icons with their text is shown
+  |z-15         untagged way nodes are hidden completely
+  |z16-         fixme=* and note=* symbols
+  |z17-         normal POI icons (without text),
+                street name along highway=* ways
+  |z18-         text for normal POI icons is shown
+  
+ * text size and node size is adapted according to zoom level (see style source below)
+ * maxspeed icons should not be distinguishable from POIs with "icon-image" property
+
+*/
+
+node {
+    text: auto;
+}
+node|z-16[setting("hide_icons")],
+node|z17-[!is_prop_set("icon-image")][setting("hide_icons")]!.maxspeedclass,
+node[!is_prop_set("icon-image")][!setting("hide_icons")]!.maxspeedclass {
+    symbol-size: 2;
+    symbol-shape: square;
+    symbol-stroke-color: node_standard#ffff00;
+    major-z-index: 4.95; /* put node squares above line text */
+}
+way > node|z-15[setting("shrink_nodes")]!:tagged {
+    symbol-shape: none;
+}
+node:connection {
+    symbol-stroke-color: node_connection#ffff00;
+}
+node:tagged {
+    symbol-stroke-color: none;
+    symbol-fill-color: node_tagged#00ffff;
+}
+
+way > node|z16[setting("shrink_nodes")]!:tagged { symbol-size: 1; }
+
+node|z17[setting("shrink_nodes")]               { symbol-size: 4; }
+way > node|z17[setting("shrink_nodes")]         { symbol-size: 2; }
+node|z17[setting("shrink_nodes")]:connection    { symbol-size: 4; }
+
+node|z18[setting("shrink_nodes")]               { symbol-size: 4; }
+way > node|z18[setting("shrink_nodes")]         { symbol-size: 3; }
+node|z18[setting("shrink_nodes")]:connection    { symbol-size: 5; }
+
+node|z19-[setting("shrink_nodes")]              { symbol-size: 4; }
+way > node|z19-[setting("shrink_nodes")]        { symbol-size: 4; }
+node|z19-[setting("shrink_nodes")]:connection   { symbol-size: 6; }
+
+node[!setting("shrink_nodes")]                  { symbol-size: 4; }
+way > node[!setting("shrink_nodes")]            { symbol-size: 4; }
+node[!setting("shrink_nodes")]:connection       { symbol-size: 6; }
+
+node|z-16[setting("hide_icons")].icon_z17!.icon_z0,
+relation|z-16[type=restriction][setting("hide_icons")] {
+    icon-image: none;
+}
+node|z-17[setting("hide_icons")]!.text_z0 {
+    text: none;
+}
+
+node|z19,area|z19   { font-size: 9; }
+node|z20-,area|z20-   { font-size: 10; }
